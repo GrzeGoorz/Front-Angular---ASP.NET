@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
    // Tytuł aplikacji
@@ -16,16 +16,13 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
    // Metoda cyklu życia komponentu wywoływana po zainicjowaniu komponentu
   ngOnInit(): void {
-    // Wywołanie metody HTTP GET, aby pobrać dane z serwera
-    this.http.get('https://localhost:5001/api/users').subscribe ({
-      // next: Obsługuje udane zapytanie HTTP, przypisując odpowiedź do zmiennej users.
-      next: response => this.users = response,
-      // error: Obsługuje błąd w przypadku niepowodzenia zapytania HTTP, wypisując błąd w konsoli.
-      error: error => console.log(error),
-       // complete Obsługuje zdarzenie po zakończeniu zapytania HTTP, niezależnie od wyniku, wypisując komunikat w konsoli
-      complete: () => console.log('Request has completed')
-    })
-
-    
-    }
+  this.http.get('https://localhost:5001/api/users').subscribe({
+    next: response => {
+      console.log('Dane użytkowników:', response);
+      this.users = response;
+    },
+    error: error => console.error('Błąd podczas pobierania danych użytkowników:', error),
+    complete: () => console.log('Zapytanie zakończone')
+  });
   }
+}
