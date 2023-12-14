@@ -22,9 +22,20 @@ export class NavComponent {
 
   // Metoda wywoływana podczas inicjalizacji komponentu
   ngOnInit(): void {
-    // Tutaj można umieścić kod, który ma być wykonany podczas inicjalizacji komponentu
-  }
+    // Wywołanie metody getCurrentUser() w celu uzyskania aktualnie zalogowanego użytkownika
+    this.getCurrentUser();
 
+  }
+  // Metoda pobierająca aktualnie zalogowanego użytkownika za pomocą serwisu konta
+  getCurrentUser() {
+    // Subskrybowanie do obserwatora currentUser$ w serwisie AccountService
+    this.accountService.currentUser$.subscribe({
+      // Obsługa zdarzenia 'next' (sukces)
+      next: user => this.loggedIn = !!user,
+      // Obsługa zdarzenia 'error' (błąd)
+      error: error => console.log(error)
+    })
+  }
   // Metoda obsługująca próbę logowania
   login() {
     // Wywołanie metody login z obiektu AccountService, przekazując dane modelu
@@ -39,7 +50,11 @@ export class NavComponent {
     })
   }
 
+  // Metoda obsługująca wylogowywanie
   logout() {
-    
+    // Wywołanie metody logout z obiektu AccountService
+    this.accountService.logout();
+    // Ustawienie flagi zalogowanego użytkownika na false
+    this.loggedIn = false;
   }
 }
